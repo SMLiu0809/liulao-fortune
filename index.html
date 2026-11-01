@@ -100,13 +100,16 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding-top: 340px;
+            padding-top: 300px;
             text-align: center;
             border: 20px solid #d4ac0d;
         }
-        #amuletPlayerName { font-size: 42px; font-weight: 900; text-shadow: 2px 2px 6px rgba(0,0,0,0.8); margin-bottom: 12px; border-bottom: 3px solid #f9e79f; padding-bottom: 8px; letter-spacing: 2px; }
-        #amuletDeityName { font-size: 24px; font-weight: 700; color: #fff; margin-bottom: 15px; background: rgba(0,0,0,0.3); padding: 5px 15px; border-radius: 20px; }
-        #amuletWishText { font-size: 26px; font-weight: 700; max-width: 80%; line-height: 1.4; text-shadow: 2px 2px 4px rgba(0,0,0,0.8); margin-top: 5px; }
+        #amuletHeaderTitle { font-size: 32px; font-weight: 900; margin-bottom: 10px; color: #fff; text-shadow: 2px 2px 4px rgba(0,0,0,0.8); }
+        #amuletPlayerName { font-size: 40px; font-weight: 900; text-shadow: 2px 2px 6px rgba(0,0,0,0.8); margin-bottom: 10px; border-bottom: 3px solid #f9e79f; padding-bottom: 6px; letter-spacing: 2px; }
+        #amuletDeityName { font-size: 22px; font-weight: 700; color: #fff; margin-bottom: 12px; background: rgba(0,0,0,0.3); padding: 5px 15px; border-radius: 20px; }
+        #amuletWishText { font-size: 24px; font-weight: 700; max-width: 80%; line-height: 1.3; text-shadow: 2px 2px 4px rgba(0,0,0,0.8); margin-bottom: 15px; }
+        #amuletPoemSummary { font-size: 18px; max-width: 85%; line-height: 1.5; color: #fff; text-shadow: 1px 1px 3px rgba(0,0,0,0.8); }
+        #amuletDesigner { position: absolute; bottom: 40px; font-size: 16px; color: #fff; letter-spacing: 2px; }
     </style>
 </head>
 <body>
@@ -258,21 +261,20 @@
     </div>
 
     <div id="customAmuletCanvasArea">
-        <div id="amuletHeaderTitle" style="font-size: 26px; margin-bottom: 8px; color: #fff;">【 劉 老 靈 籤 御 賜 護 身 符 】</div>
+        <div id="amuletHeaderTitle">【 劉 老 靈 籤 御 賜 護 身 符 】</div>
         <div id="amuletPlayerName">善男 某某某</div>
         <div id="amuletDeityName">值班神明：玉皇大帝</div>
         <div id="amuletWishText">誠心祈求：<br>萬事如意</div>
-        <div id="amuletPoemSummary" style="font-size: 18px; max-width: 85%; margin-top: 20px; line-height: 1.5; color: #fff;">籤詩指引：平安順遂</div>
-        <div style="position: absolute; bottom: 40px; font-size: 16px; color: #fff; letter-spacing: 2px;">高雄師範大學教育學系劉世閔老師設計</div>
+        <div id="amuletPoemSummary">籤詩指引：平安順遂</div>
+        <div id="amuletDesigner">高雄師範大學教育學系劉世閔老師設計</div>
     </div>
 
     <script>
-        // 五大類別專長神明多語系對照表
         const deitiesMultiLang = {
             general: {
                 "zh-Hant": ["玉皇大帝", "三官大帝", "太上老君", "斗姆元君", "中壇元帥李哪吒"],
                 "zh-Hans": ["玉皇大帝", "三官大帝", "太上老君", "斗姆元君", "中坛元帅李哪吒"],
-                "en": ["Jade Emperor", "Three Officials of Heaven, Earth and Water", "Taishang Laojun", "Doumu Yuanjun", "Marshal Zhongtan Nezha"],
+                "en": ["Jade Emperor", "Three Officials", "Taishang Laojun", "Doumu Yuanjun", "Marshal Nezha"],
                 "de": ["Jadekaiser", "Drei Offiziere", "Taishang Laojun", "Doumu Yuanjun", "Marschall Nezha"],
                 "fr": ["Empereur de Jade", "Trois Officiers", "Taishang Laojun", "Doumu Yuanjun", "Maréchal Nezha"],
                 "ja": ["玉皇大帝", "三官大帝", "太上老君", "斗姆元君", "中壇元帥李哪吒"],
@@ -281,7 +283,7 @@
             career: {
                 "zh-Hant": ["關聖帝君", "玄天上帝", "文昌帝君", "福德正神土地公", "魁星爺"],
                 "zh-Hans": ["关圣帝君", "玄天上帝", "文昌帝君", "福德正神土地公", "魁星爷"],
-                "en": ["Lord Guan", "Xuantian Shangdi", "Wenchang Dijun", "Earth God (Tudigong)", "Kuixing"],
+                "en": ["Lord Guan", "Xuantian Shangdi", "Wenchang Dijun", "Earth God Tudigong", "Kuixing"],
                 "de": ["Guan Sheng Dijun", "Xuantian Shangdi", "Wenchang Dijun", "Erdgott Tudigong", "Kuixing"],
                 "fr": ["Seigneur Guan", "Xuantian Shangdi", "Wenchang Dijun", "Dieu du Sol Tudigong", "Kuixing"],
                 "ja": ["関聖帝君", "玄天上帝", "文昌帝君", "土地公（福徳正神）", "魁星様"],
@@ -290,9 +292,9 @@
             love: {
                 "zh-Hant": ["月下老人", "觀音菩薩", "九天玄女", "天上聖母媽祖", "註生娘娘"],
                 "zh-Hans": ["月下老人", "观音菩萨", "九天玄女", "天上圣母妈祖", "注生娘娘"],
-                "en": ["Yuelao (Matchmaker)", "Guanyin Bodhisattva", "Jiutian Xuannü", "Mazu (Heavenly Mother)", "Zhusheng Niangniang"],
-                "de": ["Yuelao (Ehestifter)", "Guanyin", "Jiutian Xuannü", "Mazu", "Zhusheng Niangniang"],
-                "fr": ["Yuelao (Entremetteur)", "Guanyin", "Jiutian Xuannü", "Mazu", "Zhusheng Niangniang"],
+                "en": ["Yuelao (Matchmaker)", "Guanyin Bodhisattva", "Jiutian Xuannü", "Mazu", "Zhusheng Niangniang"],
+                "de": ["Yuelao", "Guanyin", "Jiutian Xuannü", "Mazu", "Zhusheng Niangniang"],
+                "fr": ["Yuelao", "Guanyin", "Jiutian Xuannü", "Mazu", "Zhusheng Niangniang"],
                 "ja": ["月下老人", "観音菩薩", "九天玄女", "媽祖様", "注生娘娘"],
                 "ko": ["월하노인", "관음보살", "구천현녀", "마조", "주생娘娘"]
             },
@@ -314,6 +316,58 @@
                 "ja": ["保生大帝", "華佗仙師", "神農大帝", "薬師如来", "南極老人星"],
                 "ko": ["보생대제", "화타", "신농대제", "약사여래", "남극선옹"]
             }
+        };
+
+        const fortunesMultiLang = {
+            "zh-Hant": [
+                { id: 1, title: "第 1 籤", level: "大吉", poem: "巍巍寶塔上青雲，萬里乾坤眼底分。<br>莫道前程無覓處，今朝得遇貴人津。" },
+                { id: 2, title: "第 2 籤", level: "上上", poem: "寒窗苦讀十年間，只待春風過玉關。<br>金榜題名名在望，莫教懈怠心茫然。" },
+                { id: 3, title: "第 3 籤", level: "上吉", poem: "月老紅繩千里牽，金風玉露相逢緣。<br>花開並蒂春光好，百年好合結良緣。" },
+                { id: 4, title: "第 4 籤", level: "中吉", poem: "病從口入禍心生，保養身軀莫妄行。<br>調理陰陽調息氣，平安二字值千金。" },
+                { id: 5, title: "第 5 籤", level: "平平", poem: "舟行大海遇微風，波浪雖平莫放鬆。<br>穩舵齊心向前去，前程自有好收豐。" }
+            ],
+            "zh-Hans": [
+                { id: 1, title: "第 1 签", level: "大吉", poem: "巍巍宝塔上青云，万里乾坤眼底分。<br>莫道前程无觅处，今朝得遇贵人津。" },
+                { id: 2, title: "第 2 签", level: "上上", poem: "寒窗苦读十年間，只待春风过玉关。<br>金榜题名名在望，莫教懈怠心茫然。" },
+                { id: 3, title: "第 3 签", level: "上吉", poem: "月老红绳千里牵，金风玉露相逢缘。<br>花开并蒂春光好，百年好合结良缘。" },
+                { id: 4, title: "第 4 签", level: "中吉", poem: "病从口入祸心生，保养身躯莫妄行。<br>调理阴阳调息气，平安二字值千金。" },
+                { id: 5, title: "第 5 签", level: "平平", poem: "舟行大海遇微风，波浪虽平莫放松。<br>稳舵齐心向前去，前程自有好收丰。" }
+            ],
+            "en": [
+                { id: 1, title: "Stick No. 1", level: "Great Blessing", poem: "Climbing the high pagoda to touch the clouds, the vast universe lies clear below.<br>Do not say your future is hard to find; today you meet a noble helper." },
+                { id: 2, title: "Stick No. 2", level: "Supreme Blessing", poem: "Years of diligent study by the cold window, waiting for the spring breeze.<br>Success on the imperial exam is in sight; do not let your heart waver." },
+                { id: 3, title: "Stick No. 3", level: "High Blessing", poem: "The matchmaker's red string connects thousands of miles; a destined encounter arrives.<br>Twin flowers bloom in spring light; a harmonious union for a century." },
+                { id: 4, title: "Stick No. 4", level: "Moderate Blessing", poem: "Illness enters through the mouth; take good care of your physical body.<br>Balance yin and yang and regulate your breath; peace is worth a thousand gold." },
+                { id: 5, title: "Stick No. 5", level: "Balanced", poem: "Sailing across the great sea facing a gentle breeze; though waves are calm, do not relax.<br>Hold the rudder steady and move forward together; a rich harvest awaits." }
+            ],
+            "de": [
+                { id: 1, title: "Stab Nr. 1", level: "Großer Segen", poem: "Ersteige den hohen Turm bis zu den Wolken, das Universum liegt dir zu Füßen.<br>Glaub nicht, deine Zukunft sei fern; heute triffst du einen edlen Helfer." },
+                { id: 2, title: "Stab Nr. 2", level: "Höchster Segen", poem: "Jahre des fleißigen Studiums, wartend auf den Frühlingswind.<br>Der Erfolg ist greifbar nah; lass dein Herz nicht wankend werden." },
+                { id: 3, title: "Stab Nr. 3", level: "Hoher Segen", poem: "Der rote Faden verbindet Welten, eine vorbestimmte Begegnung.<br>Zwillingsblüten im Frühlingslicht; eine harmonische Verbindung." },
+                { id: 4, title: "Stab Nr. 4", level: "Mittlerer Segen", poem: "Krankheit kommt durch den Mund; pflege deinen Körper gut.<br>Balance von Yin und Yang; Gesundheit ist unbezahlbar." },
+                { id: 5, title: "Stab Nr. 5", level: "Ausgeglichen", poem: "Segle über das große Meer; bleibe stets achtsam und wachsam.<br>Halte das Ruder fest und gehe voran; eine reiche Ernte wartet." }
+            ],
+            "fr": [
+                { id: 1, title: "Bâton N° 1", level: "Grande Bénédiction", poem: "Grimpez sur la haute pagode, l'univers s'ouvre à vos yeux.<br>Ne dites pas votre avenir introuvable ; aujourd'hui vous croisez un noble aide." },
+                { id: 2, title: "Bâton N° 2", level: "Bénédiction Suprême", poem: "Années d'étude assidue, attendant la brise printanière.<br>Le succès est en vue ; ne baissez pas les bras." },
+                { id: 3, title: "Bâton N° 3", level: "Haute Bénédiction", poem: "Le fil rouge unit les cœurs par-delà les milliers de lieues.<br>Fleurs jumelles au printemps ; union harmonieuse pour un siècle." },
+                { id: 4, title: "Bâton N° 4", level: "Bénédiction Modérée", poem: "La maladie entre par la bouche ; prenez soin de votre corps.<br>Équilibrez le yin et le yang ; la paix vaut de l'or." },
+                { id: 5, title: "Bâton N° 5", level: "Équilibré", poem: "Naviguez sur la grande mer face à la brise ; restez vigilant.<br>Tenez le gouverneur ferme ; une riche récolte vous attend." }
+            ],
+            "ja": [
+                { id: 1, title: "第 1 籤", level: "大吉", poem: "高き宝塔に登りて青雲を望む、万里の乾坤眼底に分る。<br>前程求むる所無しと言ふなかれ、今朝貴人のおおきな導きを得たり。" },
+                { id: 2, title: "第 2 籤", level: "上上", poem: "寒窓十年の読書、春風が玉関を過るを待つのみ。<br>金榜題名も名づくべし、怠けて心を迷うことなかれ。" },
+                { id: 3, title: "第 3 籤", level: "上吉", poem: "月下の赤い糸千里を繋ぐ、金風玉露のめぐり逢い。<br>花は並蒂して春光よく、百年偕老の良縁を結ぶ。" },
+                { id: 4, title: "第 4 籤", level: "中吉", poem: "病は口より入り禍は心より生ず、身を大切にみだりに行うなかれ。<br>陰陽を調え気を和す、平穏の二字は千金に値す。" },
+                { id: 5, title: "第 5 籤", level: "平平", poem: "舟は大海を行き微風に遭う、波穏やかといえども油断するな。<br>舵をしっかりと前へ進め、前途には必ず豊かな実りあり。" }
+            ],
+            "ko": [
+                { id: 1, title: "제 1 점", level: "대길", poem: "높은 탑에 올라 푸른 구름을 보니 온 세상이 한눈에 들어오는구나.<br>앞길이 막연하다 말하지 마라, 오늘 귀인을 만나리라." },
+                { id: 2, title: "제 2 점", level: "상상", poem: "찬 창가에서 십년을 공부하여 봄바람이 불기를 기다리네.<br>급제가 멀지 않았으니 마음을 게을리하지 말라." },
+                { id: 3, title: "제 3 점", level: "상길", poem: "월하노인의 붉은 실이 천 리를 잇고 운명적인 만남이 이루어지네.<br>봄날에 쌍둥이 꽃이 피듯 백년해로의 좋은 인연을 맺으리라." },
+                { id: 4, title: "제 4 점", level: "중길", poem: "병은 입으로 들어오고 화는 마음에서 생기니 몸을 잘 돌보라.<br>음양을 조화롭게 다스리니 평안함이 천금보다 값지다." },
+                { id: 5, title: "제 5 점", level: "평평", poem: "큰바다를 항해하며 순풍을 만나니 비록 파도가 잔잔해도 방심하지 마라.<br>키를 굳건히 잡고 나아가면 풍성한 수확이 기다리리라." }
+            ]
         };
 
         const i18n = {
@@ -341,8 +395,9 @@
                 lblStyle: "選擇護身符收藏款式：",
                 btnDownload: "下載收藏此款護身符桌布",
                 btnRestart: "再次求籤",
-                categories: { general: "綜合運勢", career: "前途事業", love: "姻緣情感", study: "学業考試", health: "身體健康" },
-                genders: { male: "男 (善男)", female: "女 (信女)", other: "其他 (善信)" }
+                categories: { general: "綜合運勢", career: "前途事業", love: "姻緣情感", study: "學業考試", health: "身體健康" },
+                genders: { male: "男 (善男)", female: "女 (信女)", other: "其他 (善信)" },
+                amulet: { title: "【 劉 老 靈 籤 御 賜 護 身 符 】", wishLabel: "誠心祈求：", deityLabel: "值班神明：", designer: "高雄師範大學教育學系劉世閔老師設計" }
             },
             "zh-Hans": {
                 subtitle: "高雄师范大学教育学系刘世闵老师设计",
@@ -369,7 +424,8 @@
                 btnDownload: "下载收藏此款护身符壁纸",
                 btnRestart: "再次求签",
                 categories: { general: "综合运势", career: "前途事业", love: "姻缘情感", study: "学业考试", health: "身体健康" },
-                genders: { male: "男 (善男)", female: "女 (信女)", other: "其他 (善信)" }
+                genders: { male: "男 (善男)", female: "女 (信女)", other: "其他 (善信)" },
+                amulet: { title: "【 刘 老 灵 签 御 赐 护 身 符 】", wishLabel: "诚心祈求：", deityLabel: "值班神明：", designer: "高雄师范大学教育学系刘世闵老师设计" }
             },
             "en": {
                 subtitle: "Designed by Prof. Liu Shih-Min, NKNU",
@@ -396,7 +452,8 @@
                 btnDownload: "Download & Collect Amulet",
                 btnRestart: "Draw Again",
                 categories: { general: "General Fortune", career: "Career", love: "Romance", study: "Academics", health: "Health" },
-                genders: { male: "Male", female: "Female", other: "Other" }
+                genders: { male: "Male", female: "Female", other: "Other" },
+                amulet: { title: "LIU LAO DIVINE AMULET", wishLabel: "Wish:", deityLabel: "Deity:", designer: "Designed by Prof. Liu Shih-Min, NKNU" }
             },
             "de": {
                 subtitle: "Entworfen von Prof. Liu Shih-Min, NKNU",
@@ -423,7 +480,8 @@
                 btnDownload: "Amulett herunterladen",
                 btnRestart: "Neu ziehen",
                 categories: { general: "Allgemeines Glück", career: "Karriere", love: "Romantik", study: "Studium", health: "Gesundheit" },
-                genders: { male: "Männlich", female: "Weiblich", other: "Anderes" }
+                genders: { male: "Männlich", female: "Weiblich", other: "Anderes" },
+                amulet: { title: "GÖTTLICHES AMULETT", wishLabel: "Wunsch:", deityLabel: "Gottheit:", designer: "Entworfen von Prof. Liu Shih-Min, NKNU" }
             },
             "fr": {
                 subtitle: "Conçu par le Prof. Liu Shih-Min, NKNU",
@@ -450,7 +508,8 @@
                 btnDownload: "Télécharger l'Amulette",
                 btnRestart: "Recommencer",
                 categories: { general: "Fortune Générale", career: "Carrière", love: "Romance", study: "Études", health: "Santé" },
-                genders: { male: "Homme", female: "Femme", other: "Autre" }
+                genders: { male: "Homme", female: "Femme", other: "Autre" },
+                amulet: { title: "AMULETTE DIVINE", wishLabel: "Vœu :", deityLabel: "Divinité :", designer: "Conçu par le Prof. Liu Shih-Min, NKNU" }
             },
             "ja": {
                 subtitle: "高雄師範大学教育学部 劉世閔教授設計",
@@ -477,7 +536,8 @@
                 btnDownload: "お守りをダウンロードしてコレクション",
                 btnRestart: "もう一度引く",
                 categories: { general: "総合運勢", career: "前途・仕事", love: "恋愛・姻縁", study: "学業・試験", health: "健康長寿" },
-                genders: { male: "男性 (善男)", female: "女性 (信女)", other: "その他" }
+                genders: { male: "男性 (善男)", female: "女性 (信女)", other: "その他" },
+                amulet: { title: "【 霊 籤 御 賜 お 守 り 】", wishLabel: "祈願：", deityLabel: "担当神様：", designer: "高雄師範大学教育学部 劉世閔教授設計" }
             },
             "ko": {
                 subtitle: "가오슝 사범대학 교육학과 류스민 교수 설계",
@@ -504,7 +564,8 @@
                 btnDownload: "부적 다운로드 및 소장하기",
                 btnRestart: "다시 뽑기",
                 categories: { general: "종합 운세", career: "진로 및 사업", love: "인연 및 애정", study: "학업 및 시험", health: "건강" },
-                genders: { male: "남성 (선남)", female: "여성 (신녀)", other: "기타" }
+                genders: { male: "남성 (선남)", female: "여성 (신녀)", other: "기타" },
+                amulet: { title: "【 영 험 한 부 적 】", wishLabel: "소원:", deityLabel: "담당 신:", designer: "가오슝 사범대학 교육학과 류스민 교수 설계" }
             }
         };
 
@@ -546,7 +607,7 @@
                 "去参加跨次元神仙运动会的马拉松项目，目前还在跑第 42 公里。",
                 "轮到补觉，棉被盖太厚听不到您的呼唤。",
                 "跑去出海进香兼晕船，目前正在吐纳调息。",
-                "牵红线不小心把自己的胡子跟红线绑在一起，众神正在帮忙解绳结。",
+                "牵红线不小心把自己的胡子跟红线绑在一起，众人正在帮忙解绳结。",
                 "跑去参加‘天界好声音’歌唱比赛，目前正在后台开嗓练假音。",
                 "因违章建筑被太上老君开单，全体去上法律补救讲座。",
                 "因昨晚看流星雨太晚睡，集体赖床中。",
@@ -666,25 +727,18 @@
         };
 
         function getFortuneData(index, lang) {
+            const list = fortunesMultiLang[lang] || fortunesMultiLang["zh-Hant"];
+            const item = list[index % list.length];
             const categories = ['general', 'career', 'love', 'study', 'health'];
-            const levels = ['大吉', '上上', '上吉', '中吉', '平平', '中平'];
-            const defaultPoems = [
-                "巍巍寶塔上青雲，萬里乾坤眼底分。<br>莫道前程無覓處，今朝得遇貴人津。",
-                "寒窗苦讀十年間，只待春風過玉關。<br>金榜題名名在望，莫教懈怠心茫然。",
-                "月老紅繩千里牽，金風玉露相逢緣。<br>花開並蒂春光好，百年好合結良緣。",
-                "病從口入禍心生，保養身軀莫妄行。<br>調理陰陽調息氣，平安二字值千金。",
-                "舟行大海遇微風，波浪雖平莫放鬆。<br>穩舵齊心向前去，前程自有好收豐。"
-            ];
             const cat = categories[index % categories.length];
-            const level = levels[index % levels.length];
             return {
-                id: index + 1,
-                title: `第 ${index + 1} 籤`,
-                level: level,
+                id: item.id,
+                title: item.title,
+                level: item.level,
                 cat: cat,
-                poem: defaultPoems[index % defaultPoems.length],
-                meaning: `此籤主${cat === 'general' ? '綜合運勢亨通' : cat === 'career' ? '事業順利' : cat === 'love' ? '良緣美滿' : cat === 'study' ? '金榜題名' : '身體康健'}，心誠則靈，百事皆吉。`,
-                story: `傳統經典典故 #${index + 1}`
+                poem: item.poem,
+                meaning: `Fortune guidance for selected category.`,
+                story: `Traditional Allusion #${item.id}`
             };
         }
 
@@ -769,7 +823,6 @@
             userWish = wishVal || (currentLang === 'en' ? "All best wishes" : "萬事如意");
             selectedCategory = catVal;
 
-            // 依當前語系從多語系神明庫中隨機挑選
             const langDeities = deitiesMultiLang[selectedCategory] || deitiesMultiLang.general;
             const deitiesList = langDeities[currentLang] || langDeities["zh-Hant"];
             assignedDeity = deitiesList[Math.floor(Math.random() * deitiesList.length)];
@@ -782,7 +835,7 @@
             cyl.classList.add("shaking");
             setTimeout(() => {
                 cyl.classList.remove("shaking");
-                const randIndex = Math.floor(Math.random() * 60);
+                const randIndex = Math.floor(Math.random() * 5);
                 selectedFortune = getFortuneData(randIndex, currentLang);
                 tossCount = 0;
                 shengBeiCount = 0;
@@ -847,7 +900,6 @@
             const list = excuses[currentLang] || excuses["zh-Hant"];
             const randomExcuse = list[Math.floor(Math.random() * list.length)];
             
-            // 讓英文等語系在串接神明與理由時語法更通順
             let excuseMsg = "";
             if (currentLang === 'en') {
                 excuseMsg = `The deity [${assignedDeity}] ${randomExcuse}`;
@@ -894,6 +946,7 @@
 
         function downloadPersonalizedAmulet() {
             if (!selectedFortune) return;
+            const t = i18n[currentLang] || i18n["zh-Hant"];
 
             let titlePrefix = "善男";
             if (currentLang === 'zh-Hant' || currentLang === 'zh-Hans') {
@@ -912,10 +965,12 @@
             
             applyAmuletStyleTheme(styleVal, targetArea);
 
+            document.getElementById("amuletHeaderTitle").innerText = t.amulet.title;
             document.getElementById("amuletPlayerName").innerText = `${titlePrefix} ${userName}`;
-            document.getElementById("amuletDeityName").innerText = `${currentLang === 'en' ? 'Deity: ' : '值班神明：'}${assignedDeity}`;
-            document.getElementById("amuletWishText").innerText = `${currentLang === 'en' ? 'Wish: ' : '誠心祈求：'}\n${userWish}`;
-            document.getElementById("amuletPoemSummary").innerHTML = `${selectedFortune.title}【${selectedFortune.level}】<br>${selectedFortune.poem.replace(/<br>/g, ' ')}`;
+            document.getElementById("amuletDeityName").innerText = `${t.amulet.deityLabel} ${assignedDeity}`;
+            document.getElementById("amuletWishText").innerText = `${t.amulet.wishLabel}\n${userWish}`;
+            document.getElementById("amuletPoemSummary").innerHTML = `${selectedFortune.title}【${selectedFortune.level}】<br>${selectedFortune.poem}`;
+            document.getElementById("amuletDesigner").innerText = t.amulet.designer;
 
             html2canvas(targetArea, { scale: 2, useCORS: true }).then(canvas => {
                 const link = document.createElement('a');
