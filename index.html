@@ -82,32 +82,10 @@
         .excuse-box h3 { color: #c0392b; font-size: 24px; margin-bottom: 15px; }
         .excuse-box p { font-size: 18px; color: #333; line-height: 1.8; margin-bottom: 25px; }
 
-        /* 款式選擇器樣式 */
-        .style-selector {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 100%;
-            max-width: 450px;
-            margin: 15px 0;
-        }
-        .style-selector label {
-            font-weight: bold;
-            margin-bottom: 5px;
-            color: var(--primary-dark);
-        }
-        .style-selector select {
-            width: 100%;
-            padding: 10px;
-            border: 2px solid var(--gold);
-            border-radius: 8px;
-            font-size: 16px;
-            background: #fff;
-            outline: none;
-            cursor: pointer;
-        }
+        .style-selector { display: flex; flex-direction: column; align-items: center; width: 100%; max-width: 450px; margin: 15px 0; }
+        .style-selector label { font-weight: bold; margin-bottom: 5px; color: var(--primary-dark); }
+        .style-selector select { width: 100%; padding: 10px; border: 2px solid var(--gold); border-radius: 8px; font-size: 16px; background: #fff; outline: none; cursor: pointer; }
 
-        /* 隱藏的客製化桌布渲染區 (10種款式動態切換背景) */
         #customAmuletCanvasArea {
             position: absolute;
             left: -9999px;
@@ -152,7 +130,6 @@
 
     <div class="main-container">
 
-        <!-- 步驟一：誠心祝禱 -->
         <div id="step1" class="step-section active">
             <h2 id="ui-step1-title">誠心祝禱</h2>
             <p class="instruction" id="ui-step1-desc">請誠心默念您的姓名、居住地址及所求之事，獲神明恩准後即可開始求籤。</p>
@@ -190,7 +167,6 @@
             <button class="btn" id="ui-btn-pray" onclick="startPraying()">向神明虔誠稟報</button>
         </div>
 
-        <!-- 步驟二：搖籤筒 -->
         <div id="step2" class="step-section">
             <h2 id="ui-step2-title">請搖動籤筒</h2>
             <p class="instruction" id="ui-step2-desc">請點擊籤筒或按下方按鈕，請神明賜予靈籤指示。</p>
@@ -206,7 +182,6 @@
             <button class="btn" id="ui-btn-shake" onclick="shakeCylinder()">搖出籤詩</button>
         </div>
 
-        <!-- 步驟三：擲筊確認 -->
         <div id="step3" class="step-section">
             <h2 id="ui-step3-title">擲筊確認（共三次機會）</h2>
             <div class="status-board" id="statusBoard">值班神明：載入中... | 擲筊進度：第 1 / 3 次</div>
@@ -222,7 +197,6 @@
             <button class="btn" id="ui-btn-toss" onclick="tossBlocks()">向神明擲筊 (Toss)</button>
         </div>
 
-        <!-- 步驟四：神明不在 -->
         <div id="step4" class="step-section">
             <div class="excuse-box">
                 <h3 id="ui-excuse-title">神明暫時不在</h3>
@@ -231,7 +205,6 @@
             </div>
         </div>
 
-        <!-- 步驟五：顯示籤詩結果 -->
         <div id="step5" class="step-section">
             <div class="result-card">
                 <div class="result-header">
@@ -259,7 +232,6 @@
                     <p id="resultAi">別擔心目前的膠著，只要持續累積實力，身邊很快就會出現關鍵的前輩或貴人帶領你突破盲點！</p>
                 </div>
                 
-                <!-- 款式選擇器 -->
                 <div class="style-selector">
                     <label id="ui-lbl-style">選擇護身符收藏款式：</label>
                     <select id="amuletStyleSelect">
@@ -285,7 +257,6 @@
 
     </div>
 
-    <!-- 隱藏的客製化桌布渲染區 -->
     <div id="customAmuletCanvasArea">
         <div id="amuletHeaderTitle" style="font-size: 26px; margin-bottom: 8px; color: #fff;">【 劉 老 靈 籤 御 賜 護 身 符 】</div>
         <div id="amuletPlayerName">善男 某某某</div>
@@ -296,12 +267,53 @@
     </div>
 
     <script>
-        const categoryDeities = {
-            general: ["玉皇大帝", "三官大帝", "太上老君", "斗姆元君", "中壇元帥李哪吒"],
-            career: ["關聖帝君", "玄天上帝", "文昌帝君", "福德正神土地公", "魁星爺"],
-            love: ["月下老人", "觀音菩薩", "九天玄女", "天上聖母媽祖", "註生娘娘"],
-            study: ["文昌帝君", "至聖先師孔子", "魁星爺", "朱熹夫子", "文衡聖帝"],
-            health: ["保生大帝吳夲", "華佗仙師", "神農大帝", "藥師琉璃光如來", "南極仙翁"]
+        // 五大類別專長神明多語系對照表
+        const deitiesMultiLang = {
+            general: {
+                "zh-Hant": ["玉皇大帝", "三官大帝", "太上老君", "斗姆元君", "中壇元帥李哪吒"],
+                "zh-Hans": ["玉皇大帝", "三官大帝", "太上老君", "斗姆元君", "中坛元帅李哪吒"],
+                "en": ["Jade Emperor", "Three Officials of Heaven, Earth and Water", "Taishang Laojun", "Doumu Yuanjun", "Marshal Zhongtan Nezha"],
+                "de": ["Jadekaiser", "Drei Offiziere", "Taishang Laojun", "Doumu Yuanjun", "Marschall Nezha"],
+                "fr": ["Empereur de Jade", "Trois Officiers", "Taishang Laojun", "Doumu Yuanjun", "Maréchal Nezha"],
+                "ja": ["玉皇大帝", "三官大帝", "太上老君", "斗姆元君", "中壇元帥李哪吒"],
+                "ko": ["옥황상제", "삼관대제", "태상노군", "두모원군", "중단원수 나토"]
+            },
+            career: {
+                "zh-Hant": ["關聖帝君", "玄天上帝", "文昌帝君", "福德正神土地公", "魁星爺"],
+                "zh-Hans": ["关圣帝君", "玄天上帝", "文昌帝君", "福德正神土地公", "魁星爷"],
+                "en": ["Lord Guan", "Xuantian Shangdi", "Wenchang Dijun", "Earth God (Tudigong)", "Kuixing"],
+                "de": ["Guan Sheng Dijun", "Xuantian Shangdi", "Wenchang Dijun", "Erdgott Tudigong", "Kuixing"],
+                "fr": ["Seigneur Guan", "Xuantian Shangdi", "Wenchang Dijun", "Dieu du Sol Tudigong", "Kuixing"],
+                "ja": ["関聖帝君", "玄天上帝", "文昌帝君", "土地公（福徳正神）", "魁星様"],
+                "ko": ["관성제군", "현천상제", "문창제군", "토지신", "귀성"]
+            },
+            love: {
+                "zh-Hant": ["月下老人", "觀音菩薩", "九天玄女", "天上聖母媽祖", "註生娘娘"],
+                "zh-Hans": ["月下老人", "观音菩萨", "九天玄女", "天上圣母妈祖", "注生娘娘"],
+                "en": ["Yuelao (Matchmaker)", "Guanyin Bodhisattva", "Jiutian Xuannü", "Mazu (Heavenly Mother)", "Zhusheng Niangniang"],
+                "de": ["Yuelao (Ehestifter)", "Guanyin", "Jiutian Xuannü", "Mazu", "Zhusheng Niangniang"],
+                "fr": ["Yuelao (Entremetteur)", "Guanyin", "Jiutian Xuannü", "Mazu", "Zhusheng Niangniang"],
+                "ja": ["月下老人", "観音菩薩", "九天玄女", "媽祖様", "注生娘娘"],
+                "ko": ["월하노인", "관음보살", "구천현녀", "마조", "주생娘娘"]
+            },
+            study: {
+                "zh-Hant": ["文昌帝君", "至聖先師孔子", "魁星爺", "朱熹夫子", "文衡聖帝"],
+                "zh-Hans": ["文昌帝君", "至圣先师孔子", "魁星爷", "朱熹夫子", "文衡圣帝"],
+                "en": ["Wenchang Dijun", "Confucius", "Kuixing", "Master Zhu Xi", "Wenheng Shengdi"],
+                "de": ["Wenchang Dijun", "Konfuzius", "Kuixing", "Meister Zhu Xi", "Wenheng Shengdi"],
+                "fr": ["Wenchang Dijun", "Confucius", "Kuixing", "Maître Zhu Xi", "Wenheng Shengdi"],
+                "ja": ["文昌帝君", "孔子様", "魁星様", "朱熹先生", "文衡聖帝"],
+                "ko": ["문창제군", "공자", "귀성", "주희", "문형성제"]
+            },
+            health: {
+                "zh-Hant": ["保生大帝吳夲", "華佗仙師", "神農大帝", "藥師琉璃光如來", "南極仙翁"],
+                "zh-Hans": ["保生大帝吴夲", "华佗仙师", "神农大帝", "药师琉璃光如来", "南极仙翁"],
+                "en": ["Baosheng Dadi", "Hua Tuo", "Shennong Dadi", "Medicine Buddha", "Immortal of the South Pole"],
+                "de": ["Baosheng Dadi", "Hua Tuo", "Shennong Dadi", "Medizin-Buddha", "Südpol-Unsterblicher"],
+                "fr": ["Baosheng Dadi", "Hua Tuo", "Shennong Dadi", "Bouddha de la Médecine", "Immortel du Pôle Sud"],
+                "ja": ["保生大帝", "華佗仙師", "神農大帝", "薬師如来", "南極老人星"],
+                "ko": ["보생대제", "화타", "신농대제", "약사여래", "남극선옹"]
+            }
         };
 
         const i18n = {
@@ -329,7 +341,7 @@
                 lblStyle: "選擇護身符收藏款式：",
                 btnDownload: "下載收藏此款護身符桌布",
                 btnRestart: "再次求籤",
-                categories: { general: "綜合運勢", career: "前途事業", love: "姻緣情感", study: "學業考試", health: "身體健康" },
+                categories: { general: "綜合運勢", career: "前途事業", love: "姻緣情感", study: "学業考試", health: "身體健康" },
                 genders: { male: "男 (善男)", female: "女 (信女)", other: "其他 (善信)" }
             },
             "zh-Hans": {
@@ -374,10 +386,10 @@
                 step3Title: "Divination Blocks (3 Chances)",
                 step3Desc: "Toss blocks to confirm this stick with the assigned deity (Need 2 'Sheng-bei').",
                 btnToss: "Toss Blocks",
-                excuseTitle: "Deities Temporarily Out",
+                excuseTitle: "The Deity Is Temporarily Out",
                 btnRetry: "Pray Again",
-                hDeity: "[Assigned Deity]",
-                hMeaning: "[Divine Meaning]",
+                hDeity: "[Assigned Deity Identification]",
+                hMeaning: "[Divine Meaning & Guidance]",
                 hStory: "[Historical Allusion]",
                 hAi: "[AI Modern Interpretation]",
                 lblStyle: "Select Amulet Style:",
@@ -401,7 +413,7 @@
                 step3Title: "Wurfstäbe (3 Versuche)",
                 step3Desc: "Werfen Sie die Stäbe zur Bestätigung.",
                 btnToss: "Stäbe werfen",
-                excuseTitle: "Göttlichkeit abwesend",
+                excuseTitle: "Die Gottheit ist vorübergehend abwesend",
                 btnRetry: "Erneut beten",
                 hDeity: "[Zuständige Gottheit]",
                 hMeaning: "[Göttliche Bedeutung]",
@@ -428,7 +440,7 @@
                 step3Title: "Blocs de Divination",
                 step3Desc: "Lancez les blocs pour confirmer.",
                 btnToss: "Lancer les Blocs",
-                excuseTitle: "Divinités Absentes",
+                excuseTitle: "La Divinité est Absente",
                 btnRetry: "Prier à Nouveau",
                 hDeity: "[Divinité Assignée]",
                 hMeaning: "[Signification Divine]",
@@ -455,7 +467,7 @@
                 step3Title: "聖杯投げ確認（3回まで）",
                 step3Desc: "担当の神様に聖杯を投げ、この籤を確認してください。",
                 btnToss: "聖杯を投げる",
-                excuseTitle: "神様は不在中です",
+                excuseTitle: "神様はただいま不在中です",
                 btnRetry: "もう一度祈願する",
                 hDeity: "【担当神様】",
                 hMeaning: "【神様のお告げ・解説】",
@@ -482,7 +494,7 @@
                 step3Title: "점판 던지기 (총 3번)",
                 step3Desc: "담당 신에게 점판을 던져 이 점괘를 확인하세요.",
                 btnToss: "점판 던지기",
-                excuseTitle: "신께서 부재중이십니다",
+                excuseTitle: "신께서 잠시 부재중이십니다",
                 btnRetry: "다시 기도하기",
                 hDeity: "[담당 신]",
                 hMeaning: "[신년 해설]",
@@ -757,7 +769,9 @@
             userWish = wishVal || (currentLang === 'en' ? "All best wishes" : "萬事如意");
             selectedCategory = catVal;
 
-            const deitiesList = categoryDeities[selectedCategory] || categoryDeities.general;
+            // 依當前語系從多語系神明庫中隨機挑選
+            const langDeities = deitiesMultiLang[selectedCategory] || deitiesMultiLang.general;
+            const deitiesList = langDeities[currentLang] || langDeities["zh-Hant"];
             assignedDeity = deitiesList[Math.floor(Math.random() * deitiesList.length)];
 
             showStep(2);
@@ -832,7 +846,24 @@
         function triggerDivineAway() {
             const list = excuses[currentLang] || excuses["zh-Hant"];
             const randomExcuse = list[Math.floor(Math.random() * list.length)];
-            document.getElementById("excuseText").innerText = `值班神明【${assignedDeity}】${randomExcuse}`;
+            
+            // 讓英文等語系在串接神明與理由時語法更通順
+            let excuseMsg = "";
+            if (currentLang === 'en') {
+                excuseMsg = `The deity [${assignedDeity}] ${randomExcuse}`;
+            } else if (currentLang === 'de') {
+                excuseMsg = `Die Gottheit [${assignedDeity}] ${randomExcuse}`;
+            } else if (currentLang === 'fr') {
+                excuseMsg = `La divinité [${assignedDeity}] ${randomExcuse}`;
+            } else if (currentLang === 'ja') {
+                excuseMsg = `担当の神様【${assignedDeity}】${randomExcuse}`;
+            } else if (currentLang === 'ko') {
+                excuseMsg = `담당 신 [${assignedDeity}] ${randomExcuse}`;
+            } else {
+                excuseMsg = `值班神明【${assignedDeity}】${randomExcuse}`;
+            }
+
+            document.getElementById("excuseText").innerText = excuseMsg;
             showStep(4);
         }
 
@@ -843,10 +874,10 @@
             document.getElementById("resultTitle").innerText = `${selectedFortune.title} 【${selectedFortune.level}】`;
             document.getElementById("resultCategoryBadge").innerText = t.categories[selectedFortune.cat] || selectedFortune.cat;
             document.getElementById("resultPoem").innerHTML = selectedFortune.poem;
-            document.getElementById("resultDeityName").innerText = `${assignedDeity} 慈悲鑒定並賜予指示`;
+            document.getElementById("resultDeityName").innerText = `${assignedDeity} - 慈悲指示`;
             document.getElementById("resultMeaning").innerText = selectedFortune.meaning;
             document.getElementById("resultStory").innerText = selectedFortune.story;
-            document.getElementById("resultAi").innerText = `AI 現代解讀：由【${assignedDeity}】坐鎮庇佑，提醒您在${t.categories[selectedFortune.cat]}上保持彈性與信心，把握當下契機！`;
+            document.getElementById("resultAi").innerText = `AI 現代解讀：由【${assignedDeity}】坐鎮庇佑，提醒您在${t.categories[selectedFortune.cat]}上保持彈性與信心！`;
 
             showStep(5);
         }
@@ -879,17 +910,16 @@
             const styleVal = document.getElementById("amuletStyleSelect").value;
             const targetArea = document.getElementById("customAmuletCanvasArea");
             
-            // 依據 10 種款式套用不同的視覺色彩與邊框主題
             applyAmuletStyleTheme(styleVal, targetArea);
 
             document.getElementById("amuletPlayerName").innerText = `${titlePrefix} ${userName}`;
-            document.getElementById("amuletDeityName").innerText = `值班神明：${assignedDeity}`;
-            document.getElementById("amuletWishText").innerText = `誠心祈求：\n${userWish}`;
+            document.getElementById("amuletDeityName").innerText = `${currentLang === 'en' ? 'Deity: ' : '值班神明：'}${assignedDeity}`;
+            document.getElementById("amuletWishText").innerText = `${currentLang === 'en' ? 'Wish: ' : '誠心祈求：'}\n${userWish}`;
             document.getElementById("amuletPoemSummary").innerHTML = `${selectedFortune.title}【${selectedFortune.level}】<br>${selectedFortune.poem.replace(/<br>/g, ' ')}`;
 
             html2canvas(targetArea, { scale: 2, useCORS: true }).then(canvas => {
                 const link = document.createElement('a');
-                link.download = `${userName}_${assignedDeity}_${styleVal}_護身符.png`;
+                link.download = `${userName}_${assignedDeity}_護身符.png`;
                 link.href = canvas.toDataURL('image/png');
                 link.click();
             }).catch(err => {
@@ -898,59 +928,18 @@
             });
         }
 
-        // 10種護身符款式視覺主題切換函式
         function applyAmuletStyleTheme(style, element) {
             switch(style) {
-                case 'style1': // 御賜朱紅
-                    element.style.backgroundColor = "#b92b27";
-                    element.style.borderColor = "#d4ac0d";
-                    element.style.color = "#f9e79f";
-                    break;
-                case 'style2': // 太極八卦
-                    element.style.backgroundColor = "#78281f";
-                    element.style.borderColor = "#a04000";
-                    element.style.color = "#fcf3cf";
-                    break;
-                case 'style3': // 紫氣東來
-                    element.style.backgroundColor = "#512e5f";
-                    element.style.borderColor = "#af7ac5";
-                    element.style.color = "#ebdef0";
-                    break;
-                case 'style4': // 財源廣進
-                    element.style.backgroundColor = "#b7950b";
-                    element.style.borderColor = "#7d6608";
-                    element.style.color = "#fef9e7";
-                    break;
-                case 'style5': // 桃花人緣
-                    element.style.backgroundColor = "#c0392b";
-                    element.style.borderColor = "#f1948a";
-                    element.style.color = "#fadbd8";
-                    break;
-                case 'style6': // 文昌智慧
-                    element.style.backgroundColor = "#117a65";
-                    element.style.borderColor = "#52be80";
-                    element.style.color = "#e8f8f5";
-                    break;
-                case 'style7': // 平安健康
-                    element.style.backgroundColor = "#1e8449";
-                    element.style.borderColor = "#82e0aa";
-                    element.style.color = "#eafaf1";
-                    break;
-                case 'style8': // 蒼龍騰達
-                    element.style.backgroundColor = "#1b4f72";
-                    element.style.borderColor = "#5499c7";
-                    element.style.color = "#ebf5fb";
-                    break;
-                case 'style9': // 光明化煞
-                    element.style.backgroundColor = "#d35400";
-                    element.style.borderColor = "#f39c12";
-                    element.style.color = "#fef5e7";
-                    break;
-                case 'style10': // 劉老珍藏
-                    element.style.backgroundColor = "#2c3e50";
-                    element.style.borderColor = "#f39c12";
-                    element.style.color = "#f9e79f";
-                    break;
+                case 'style1': element.style.backgroundColor = "#b92b27"; element.style.borderColor = "#d4ac0d"; element.style.color = "#f9e79f"; break;
+                case 'style2': element.style.backgroundColor = "#78281f"; element.style.borderColor = "#a04000"; element.style.color = "#fcf3cf"; break;
+                case 'style3': element.style.backgroundColor = "#512e5f"; element.style.borderColor = "#af7ac5"; element.style.color = "#ebdef0"; break;
+                case 'style4': element.style.backgroundColor = "#b7950b"; element.style.borderColor = "#7d6608"; element.style.color = "#fef9e7"; break;
+                case 'style5': element.style.backgroundColor = "#c0392b"; element.style.borderColor = "#f1948a"; element.style.color = "#fadbd8"; break;
+                case 'style6': element.style.backgroundColor = "#117a65"; element.style.borderColor = "#52be80"; element.style.color = "#e8f8f5"; break;
+                case 'style7': element.style.backgroundColor = "#1e8449"; element.style.borderColor = "#82e0aa"; element.style.color = "#eafaf1"; break;
+                case 'style8': element.style.backgroundColor = "#1b4f72"; element.style.borderColor = "#5499c7"; element.style.color = "#ebf5fb"; break;
+                case 'style9': element.style.backgroundColor = "#d35400"; element.style.borderColor = "#f39c12"; element.style.color = "#fef5e7"; break;
+                case 'style10': element.style.backgroundColor = "#2c3e50"; element.style.borderColor = "#f39c12"; element.style.color = "#f9e79f"; break;
             }
         }
     </script>
