@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>劉老靈籤 - 高雄師範大學教育學系劉世閔老師設計</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700;900&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- 引入 html2canvas 函式庫，用於將 HTML 轉為圖片下載 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+    <style>
+        :root {
+            --primary: #c0392b;
+            --primary-dark: #962d22;
+            --gold: #d4ac0d;
+            --gold-light: #f9e79f;
+            --bg-color: #2c1810;
+            --card-bg: #fffdf9;
+            --text-dark: #2c2c2c;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Noto Sans TC', sans-serif; }
+        body { background-color: var(--bg-color); background-image: radial-gradient(circle, #3d2317 0%, #1a0f0a 100%); color: var(--text-dark); min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding: 20px; }
+        
+        header { width: 100%; max-width: 900px; display: flex; justify-content: space-between; align-items: center; padding: 15px 25px; background: rgba(0, 0, 0, 0.4); border: 2px solid var(--gold); border-radius: 12px; margin-bottom: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
+        .logo-area h1 { font-family: 'Noto Serif TC', serif; color: var(--gold-light); font-size: 24px; font-weight: 900; text-shadow: 2px 2px 4px rgba(0,0,0,0.8); display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+        .logo-area .subtitle { font-size: 13px; color: #f1c40f; font-weight: 500; }
+        .lang-select select { background: #fff; color: var(--text-dark); padding: 8px 12px; border-radius: 6px; border: 2px solid var(--gold); font-weight: 700; cursor: pointer; outline: none; }
+
+        .main-container { width: 100%; max-width: 900px; background: var(--card-bg); border: 4px solid var(--gold); border-radius: 16px; padding: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.6); min-height: 550px; display: flex; flex-direction: column; align-items: center; }
+        .step-section { width: 100%; display: none; flex-direction: column; align-items: center; animation: fadeIn 0.5s ease-in-out; }
+        .step-section.active { display: flex; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        h2 { font-family: 'Noto Serif TC', serif; color: var(--primary); font-size: 24px; margin-bottom: 15px; text-align: center; }
+        p.instruction { text-align: center; color: #555; margin-bottom: 25px; font-size: 16px; line-height: 1.6; }
+
+        .form-group { width: 100%; max-width: 450px; margin-bottom: 15px; }
+        .form-group label { display: block; margin-bottom: 5px; font-weight: bold; color: #444; }
+        .form-group input, .form-group select { width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 8px; font-size: 16px; outline: none; transition: border-color 0.3s; }
+        .form-group input:focus, .form-group select:focus { border-color: var(--primary); }
+
+        .btn { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; border: none; padding: 12px 30px; font-size: 18px; font-weight: bold; border-radius: 30px; cursor: pointer; box-shadow: 0 4px 10px rgba(192, 57, 43, 0.4); transition: transform 0.2s, box-shadow 0.2s; margin-top: 15px; }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 6px 15px rgba(192, 57, 43, 0.6); }
+        .btn:active { transform: translateY(0); }
+
+        .cylinder-wrapper { position: relative; margin: 30px 0; cursor: pointer; }
+        .cylinder { width: 140px; height: 200px; background: linear-gradient(135deg, #a93226, #78281f); border: 4px solid var(--gold); border-radius: 20px 20px 10px 10px; box-shadow: inset 0 0 20px rgba(0,0,0,0.5), 0 8px 20px rgba(0,0,0,0.4); display: flex; justify-content: center; align-items: flex-start; padding-top: 15px; position: relative; transition: transform 0.3s; }
+        .cylinder:hover { transform: scale(1.03); }
+        .stick { width: 12px; height: 160px; background: #d4ac0d; position: absolute; top: -20px; border-radius: 6px; box-shadow: 2px 2px 5px rgba(0,0,0,0.3); transition: transform 0.5s; }
+        .cylinder.shaking { animation: shake 0.5s infinite alternate; }
+        @keyframes shake { 0% { transform: rotate(-5deg); } 100% { transform: rotate(5deg); } }
+
+        .divination-arena { display: flex; flex-direction: column; align-items: center; width: 100%; }
+        .blocks-container { display: flex; gap: 40px; margin: 40px 0; min-height: 120px; align-items: center; justify-content: center; }
+        
+        .block { width: 90px; height: 90px; background: #e74c3c; border-radius: 50% 50% 10% 10%; position: relative; box-shadow: 0 10px 20px rgba(0,0,0,0.3); display: flex; justify-content: center; align-items: center; transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .block.tossing { animation: toss 0.8s ease-in-out; }
+        @keyframes toss { 0% { transform: translateY(0) rotate(0deg) scale(1); } 50% { transform: translateY(-150px) rotate(720deg) scale(1.2); } 100% { transform: translateY(0) rotate(1440deg) scale(1); } }
+        
+        .block.flat { background: #c0392b; border: 2px solid #962d22; }
+        .block.convex { background: #d9534f; border: 2px solid #a93226; }
+        .block-text { color: var(--gold-light); font-family: 'Noto Serif TC', serif; font-weight: 900; font-size: 18px; text-shadow: 1px 1px 2px rgba(0,0,0,0.8); display: none; }
+        .block.convex .block-text { display: block; }
+
+        .status-board { background: #fdfefe; border: 2px dashed var(--gold); padding: 15px 25px; border-radius: 10px; margin-bottom: 20px; font-size: 18px; font-weight: bold; text-align: center; color: var(--primary-dark); min-width: 320px; }
+
+        .result-card { background: #fff; border: 2px solid var(--gold); border-radius: 12px; padding: 25px; width: 100%; max-width: 700px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        .result-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #eee; padding-bottom: 15px; margin-bottom: 15px; }
+        .fortune-title { font-size: 22px; font-weight: bold; color: var(--primary); font-family: 'Noto Serif TC', serif; }
+        .fortune-badge { background: var(--gold); color: #fff; padding: 5px 15px; border-radius: 20px; font-weight: bold; font-size: 16px; }
+        .poem-box { background: #fcf3cf; border-left: 5px solid var(--gold); padding: 15px 20px; font-family: 'Noto Serif TC', serif; font-size: 20px; line-height: 1.8; margin-bottom: 20px; color: #512e5f; letter-spacing: 1px; }
+        .info-section { margin-bottom: 15px; }
+        .info-section h4 { color: var(--primary-dark); margin-bottom: 5px; font-size: 16px; }
+        .info-section p { color: #444; line-height: 1.6; font-size: 15px; }
+        .action-buttons { display: flex; gap: 15px; margin-top: 25px; justify-content: center; flex-wrap: wrap; align-items: center; }
+        .btn-secondary { background: #7f8c8d; }
+        .btn-secondary:hover { background: #626a6b; }
+        
+        .excuse-box { background: #fdedec; border: 3px solid #e74c3c; border-radius: 12px; padding: 30px; text-align: center; max-width: 600px; }
+        .excuse-box h3 { color: #c0392b; font-size: 24px; margin-bottom: 15px; }
+        .excuse-box p { font-size: 18px; color: #333; line-height: 1.8; margin-bottom: 25px; }
+
+        /* 款式選擇器樣式 */
+        .style-selector {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 450px;
+            margin: 15px 0;
+        }
+        .style-selector label {
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: var(--primary-dark);
+        }
+        .style-selector select {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid var(--gold);
+            border-radius: 8px;
+            font-size: 16px;
+            background: #fff;
+            outline: none;
+            cursor: pointer;
+        }
+
+        /* 隱藏的客製化桌布渲染區 (10種款式動態切換背景) */
+        #customAmuletCanvasArea {
+            position: absolute;
+            left: -9999px;
+            top: -9999px;
+            width: 648px;
+            height: 1296px;
+            background-color: #b92b27;
+            background-size: cover;
+            background-position: center;
+            font-family: 'Noto Serif TC', serif;
+            color: #f9e79f;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 340px;
+            text-align: center;
+            border: 20px solid #d4ac0d;
+        }
+        #amuletPlayerName { font-size: 42px; font-weight: 900; text-shadow: 2px 2px 6px rgba(0,0,0,0.8); margin-bottom: 12px; border-bottom: 3px solid #f9e79f; padding-bottom: 8px; letter-spacing: 2px; }
+        #amuletDeityName { font-size: 24px; font-weight: 700; color: #fff; margin-bottom: 15px; background: rgba(0,0,0,0.3); padding: 5px 15px; border-radius: 20px; }
+        #amuletWishText { font-size: 26px; font-weight: 700; max-width: 80%; line-height: 1.4; text-shadow: 2px 2px 4px rgba(0,0,0,0.8); margin-top: 5px; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo-area">
+            <h1>劉老靈籤 <span class="subtitle" id="ui-subtitle">高雄師範大學教育學系劉世閔老師設計</span></h1>
+        </div>
+        <div class="lang-select">
+            <select id="languageSelect" onchange="changeLanguage(this.value)">
+                <option value="zh-Hant">繁體中文</option>
+                <option value="zh-Hans">简体中文</option>
+                <option value="en">English</option>
+                <option value="de">Deutsch</option>
+                <option value="fr">Français</option>
+                <option value="ja">日本語</option>
+                <option value="ko">한국어</option>
+            </select>
+        </div>
+    </header>
+
+    <div class="main-container">
+
+        <!-- 步驟一：誠心祝禱 -->
+        <div id="step1" class="step-section active">
+            <h2 id="ui-step1-title">誠心祝禱</h2>
+            <p class="instruction" id="ui-step1-desc">請誠心默念您的姓名、居住地址及所求之事，獲神明恩准後即可開始求籤。</p>
+            
+            <div class="form-group">
+                <label id="ui-lbl-name">您的姓名：</label>
+                <input type="text" id="userNameInput" placeholder="請輸入姓名">
+            </div>
+
+            <div class="form-group">
+                <label id="ui-lbl-gender">您的性別：</label>
+                <select id="userGenderInput">
+                    <option value="male">男 (善男)</option>
+                    <option value="female">女 (信女)</option>
+                    <option value="other">其他 (善信)</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label id="ui-lbl-category">祈求類別：</label>
+                <select id="fortuneCategory">
+                    <option value="general">綜合運勢</option>
+                    <option value="career">前途事業</option>
+                    <option value="love">姻緣情感</option>
+                    <option value="study">學業考試</option>
+                    <option value="health">身體健康</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label id="ui-lbl-wish">具體祈願：</label>
+                <input type="text" id="userWishInput" placeholder="例如：希望順利通過考試 / 尋求良緣">
+            </div>
+
+            <button class="btn" id="ui-btn-pray" onclick="startPraying()">向神明虔誠稟報</button>
+        </div>
+
+        <!-- 步驟二：搖籤筒 -->
+        <div id="step2" class="step-section">
+            <h2 id="ui-step2-title">請搖動籤筒</h2>
+            <p class="instruction" id="ui-step2-desc">請點擊籤筒或按下方按鈕，請神明賜予靈籤指示。</p>
+            
+            <div class="cylinder-wrapper" onclick="shakeCylinder()">
+                <div class="cylinder" id="fortuneCylinder">
+                    <div class="stick" style="transform: rotate(-10deg); top: -25px;"></div>
+                    <div class="stick" style="transform: rotate(5deg); top: -30px;"></div>
+                    <div class="stick" style="transform: rotate(-2deg); top: -20px;"></div>
+                </div>
+            </div>
+
+            <button class="btn" id="ui-btn-shake" onclick="shakeCylinder()">搖出籤詩</button>
+        </div>
+
+        <!-- 步驟三：擲筊確認 -->
+        <div id="step3" class="step-section">
+            <h2 id="ui-step3-title">擲筊確認（共三次機會）</h2>
+            <div class="status-board" id="statusBoard">值班神明：載入中... | 擲筊進度：第 1 / 3 次</div>
+            <p class="instruction" id="ui-step3-desc">請向值班神明擲筊三次，確認此籤是否為神明指定之籤詩（需2次聖筊）。</p>
+
+            <div class="divination-arena">
+                <div class="blocks-container">
+                    <div class="block flat" id="blockLeft"><span class="block-text">有求</span></div>
+                    <div class="block flat" id="blockRight"><span class="block-text">必應</span></div>
+                </div>
+            </div>
+
+            <button class="btn" id="ui-btn-toss" onclick="tossBlocks()">向神明擲筊 (Toss)</button>
+        </div>
+
+        <!-- 步驟四：神明不在 -->
+        <div id="step4" class="step-section">
+            <div class="excuse-box">
+                <h3 id="ui-excuse-title">神明暫時不在</h3>
+                <p id="excuseText">載入中...</p>
+                <button class="btn" id="ui-btn-retry" onclick="resetToStep1()">重新誠心祈求</button>
+            </div>
+        </div>
+
+        <!-- 步驟五：顯示籤詩結果 -->
+        <div id="step5" class="step-section">
+            <div class="result-card">
+                <div class="result-header">
+                    <div class="fortune-title" id="resultTitle">第 1 籤 【大吉】</div>
+                    <div class="fortune-badge" id="resultCategoryBadge">綜合運勢</div>
+                </div>
+                <div class="poem-box" id="resultPoem">
+                    巍巍寶塔上青雲，萬里乾坤眼底分。<br>
+                    莫道前程無覓處，今朝得遇貴人津。
+                </div>
+                <div class="info-section">
+                    <h4 id="ui-h-deity">【值班神明鑒定】</h4>
+                    <p id="resultDeityName">玉皇大帝 慈悲指示</p>
+                </div>
+                <div class="info-section">
+                    <h4 id="ui-h-meaning">【聖意 / 廟宇解說】</h4>
+                    <p id="resultMeaning">求職高升，百事皆吉，登高望遠，貴人提攜。</p>
+                </div>
+                <div class="info-section">
+                    <h4 id="ui-h-story">【歷史典故】</h4>
+                    <p id="resultStory">姜太公渭水遇文王</p>
+                </div>
+                <div class="info-section">
+                    <h4 id="ui-h-ai">【AI 現代白話解讀】</h4>
+                    <p id="resultAi">別擔心目前的膠著，只要持續累積實力，身邊很快就會出現關鍵的前輩或貴人帶領你突破盲點！</p>
+                </div>
+                
+                <!-- 款式選擇器 -->
+                <div class="style-selector">
+                    <label id="ui-lbl-style">選擇護身符收藏款式：</label>
+                    <select id="amuletStyleSelect">
+                        <option value="style1">1. 御賜朱紅（經典祈福款）</option>
+                        <option value="style2">2. 太極八卦（鎮宅化煞款）</option>
+                        <option value="style3">3. 紫氣東來 (尊榮開運款)</option>
+                        <option value="style4">4. 財源廣進 (招財納福款)</option>
+                        <option value="style5">5. 桃花人緣 (姻緣喜慶款)</option>
+                        <option value="style6">6. 文昌智慧 (金榜題名款)</option>
+                        <option value="style7">7. 平安健康 (養生康泰款)</option>
+                        <option value="style8">8. 蒼龍騰達 (霸氣事業款)</option>
+                        <option value="style9">9. 光明化煞 (破除迷津款)</option>
+                        <option value="style10">10. 劉老珍藏 (大師紀念款)</option>
+                    </select>
+                </div>
+
+                <div class="action-buttons">
+                    <button class="btn" id="ui-btn-download" onclick="downloadPersonalizedAmulet()">下載收藏此款護身符桌布</button>
+                    <button class="btn btn-secondary" id="ui-btn-restart" onclick="resetToStep1()">再次求籤</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- 隱藏的客製化桌布渲染區 -->
+    <div id="customAmuletCanvasArea">
+        <div id="amuletHeaderTitle" style="font-size: 26px; margin-bottom: 8px; color: #fff;">【 劉 老 靈 籤 御 賜 護 身 符 】</div>
+        <div id="amuletPlayerName">善男 某某某</div>
+        <div id="amuletDeityName">值班神明：玉皇大帝</div>
+        <div id="amuletWishText">誠心祈求：<br>萬事如意</div>
+        <div id="amuletPoemSummary" style="font-size: 18px; max-width: 85%; margin-top: 20px; line-height: 1.5; color: #fff;">籤詩指引：平安順遂</div>
+        <div style="position: absolute; bottom: 40px; font-size: 16px; color: #fff; letter-spacing: 2px;">高雄師範大學教育學系劉世閔老師設計</div>
+    </div>
+
+    <script>
+        const categoryDeities = {
+            general: ["玉皇大帝", "三官大帝", "太上老君", "斗姆元君", "中壇元帥李哪吒"],
+            career: ["關聖帝君", "玄天上帝", "文昌帝君", "福德正神土地公", "魁星爺"],
+            love: ["月下老人", "觀音菩薩", "九天玄女", "天上聖母媽祖", "註生娘娘"],
+            study: ["文昌帝君", "至聖先師孔子", "魁星爺", "朱熹夫子", "文衡聖帝"],
+            health: ["保生大帝吳夲", "華佗仙師", "神農大帝", "藥師琉璃光如來", "南極仙翁"]
+        };
+
+        const i18n = {
+            "zh-Hant": {
+                subtitle: "高雄師範大學教育學系劉世閔老師設計",
+                step1Title: "誠心祝禱",
+                step1Desc: "請誠心默念您的姓名、居住地址及所求之事，獲神明恩准後即可開始求籤。",
+                lblName: "您的姓名：",
+                lblGender: "您的性別：",
+                lblCategory: "祈求類別：",
+                lblWish: "具體祈願：",
+                btnPray: "向神明虔誠稟報",
+                step2Title: "請搖動籤筒",
+                step2Desc: "請點擊籤筒或按下方按鈕，請神明賜予靈籤指示。",
+                btnShake: "搖出籤詩",
+                step3Title: "擲筊確認（共三次機會）",
+                step3Desc: "請向值班神明擲筊三次，確認此籤是否為神明指定之籤詩（需2次聖筊）。",
+                btnToss: "向神明擲筊 (Toss)",
+                excuseTitle: "神明暫時不在辦公室",
+                btnRetry: "重新誠心祈求",
+                hDeity: "【值班神明鑒定】",
+                hMeaning: "【聖意 / 廟宇解說】",
+                hStory: "【歷史典故】",
+                hAi: "【AI 現代白話解讀】",
+                lblStyle: "選擇護身符收藏款式：",
+                btnDownload: "下載收藏此款護身符桌布",
+                btnRestart: "再次求籤",
+                categories: { general: "綜合運勢", career: "前途事業", love: "姻緣情感", study: "學業考試", health: "身體健康" },
+                genders: { male: "男 (善男)", female: "女 (信女)", other: "其他 (善信)" }
+            },
+            "zh-Hans": {
+                subtitle: "高雄师范大学教育学系刘世闵老师设计",
+                step1Title: "诚心祝祷",
+                step1Desc: "请诚心默念您的姓名、居住地址及所求之事，获神明恩准后即可开始求签。",
+                lblName: "您的姓名：",
+                lblGender: "您的性别：",
+                lblCategory: "祈求类别：",
+                lblWish: "具体祈愿：",
+                btnPray: "向神明诚恳禀报",
+                step2Title: "请摇动签筒",
+                step2Desc: "请点击签筒或按下方按钮，请神明赐予灵签指示。",
+                btnShake: "摇出签诗",
+                step3Title: "掷筊确认（共三次机会）",
+                step3Desc: "请向值班神明掷筊三次，确认此签是否为神明指定之签诗（需2次圣筊）。",
+                btnToss: "向神明掷筊 (Toss)",
+                excuseTitle: "神明暂时不在办公室",
+                btnRetry: "重新诚心祈求",
+                hDeity: "【值班神明鉴定】",
+                hMeaning: "【圣意 / 庙宇解说】",
+                hStory: "【历史典故】",
+                hAi: "【AI 现代白话解读】",
+                lblStyle: "选择护身符收藏款式：",
+                btnDownload: "下载收藏此款护身符壁纸",
+                btnRestart: "再次求签",
+                categories: { general: "综合运势", career: "前途事业", love: "姻缘情感", study: "学业考试", health: "身体健康" },
+                genders: { male: "男 (善男)", female: "女 (信女)", other: "其他 (善信)" }
+            },
+            "en": {
+                subtitle: "Designed by Prof. Liu Shih-Min, NKNU",
+                step1Title: "Sincere Prayer",
+                step1Desc: "Silently state your name, address, and request.",
+                lblName: "Your Name:",
+                lblGender: "Gender:",
+                lblCategory: "Category:",
+                lblWish: "Specific Wish:",
+                btnPray: "Present Prayer",
+                step2Title: "Shake Cylinder",
+                step2Desc: "Click to receive stick.",
+                btnShake: "Draw Stick",
+                step3Title: "Divination Blocks (3 Chances)",
+                step3Desc: "Toss blocks to confirm this stick with the assigned deity (Need 2 'Sheng-bei').",
+                btnToss: "Toss Blocks",
+                excuseTitle: "Deities Temporarily Out",
+                btnRetry: "Pray Again",
+                hDeity: "[Assigned Deity]",
+                hMeaning: "[Divine Meaning]",
+                hStory: "[Historical Allusion]",
+                hAi: "[AI Modern Interpretation]",
+                lblStyle: "Select Amulet Style:",
+                btnDownload: "Download & Collect Amulet",
+                btnRestart: "Draw Again",
+                categories: { general: "General Fortune", career: "Career", love: "Romance", study: "Academics", health: "Health" },
+                genders: { male: "Male", female: "Female", other: "Other" }
+            },
+            "de": {
+                subtitle: "Entworfen von Prof. Liu Shih-Min, NKNU",
+                step1Title: "Aufrichtiges Gebet",
+                step1Desc: "Nennen Sie Ihren Namen und Ihr Anliegen.",
+                lblName: "Ihr Name:",
+                lblGender: "Geschlecht:",
+                lblCategory: "Kategorie:",
+                lblWish: "Ihr Wunsch:",
+                btnPray: "Gebet darbringen",
+                step2Title: "Becher schütteln",
+                step2Desc: "Klicken Sie, um das Orakel zu empfangen.",
+                btnShake: "Stab ziehen",
+                step3Title: "Wurfstäbe (3 Versuche)",
+                step3Desc: "Werfen Sie die Stäbe zur Bestätigung.",
+                btnToss: "Stäbe werfen",
+                excuseTitle: "Göttlichkeit abwesend",
+                btnRetry: "Erneut beten",
+                hDeity: "[Zuständige Gottheit]",
+                hMeaning: "[Göttliche Bedeutung]",
+                hStory: "[Historische Anspielung]",
+                hAi: "[KI-Moderne Deutung]",
+                lblStyle: "Amulett-Stil wählen:",
+                btnDownload: "Amulett herunterladen",
+                btnRestart: "Neu ziehen",
+                categories: { general: "Allgemeines Glück", career: "Karriere", love: "Romantik", study: "Studium", health: "Gesundheit" },
+                genders: { male: "Männlich", female: "Weiblich", other: "Anderes" }
+            },
+            "fr": {
+                subtitle: "Conçu par le Prof. Liu Shih-Min, NKNU",
+                step1Title: "Prière Sincère",
+                step1Desc: "Nommez votre intention.",
+                lblName: "Votre Nom :",
+                lblGender: "Genre :",
+                lblCategory: "Catégorie :",
+                lblWish: "Votre Vœu :",
+                btnPray: "Soumettre la Prière",
+                step2Title: "Secouer le Cylindre",
+                step2Desc: "Cliquez pour tirer.",
+                btnShake: "Tirer le Bâton",
+                step3Title: "Blocs de Divination",
+                step3Desc: "Lancez les blocs pour confirmer.",
+                btnToss: "Lancer les Blocs",
+                excuseTitle: "Divinités Absentes",
+                btnRetry: "Prier à Nouveau",
+                hDeity: "[Divinité Assignée]",
+                hMeaning: "[Signification Divine]",
+                hStory: "[Allusion Historique]",
+                hAi: "[Interprétation Moderne IA]",
+                lblStyle: "Choisir le Style d'Amulette :",
+                btnDownload: "Télécharger l'Amulette",
+                btnRestart: "Recommencer",
+                categories: { general: "Fortune Générale", career: "Carrière", love: "Romance", study: "Études", health: "Santé" },
+                genders: { male: "Homme", female: "Femme", other: "Autre" }
+            },
+            "ja": {
+                subtitle: "高雄師範大学教育学部 劉世閔教授設計",
+                step1Title: "誠心祈願",
+                step1Desc: "お名前と願い事を心の中で唱えてください。",
+                lblName: "お名前：",
+                lblGender: "性別：",
+                lblCategory: "祈願分野：",
+                lblWish: "具体的な願い：",
+                btnPray: "神様に祈りを捧げる",
+                step2Title: "おみくじ筒を振る",
+                step2Desc: "筒をクリックしてください。",
+                btnShake: "おみくじを引く",
+                step3Title: "聖杯投げ確認（3回まで）",
+                step3Desc: "担当の神様に聖杯を投げ、この籤を確認してください。",
+                btnToss: "聖杯を投げる",
+                excuseTitle: "神様は不在中です",
+                btnRetry: "もう一度祈願する",
+                hDeity: "【担当神様】",
+                hMeaning: "【神様のお告げ・解説】",
+                hStory: "【歴史的故事】",
+                hAi: "【AI現代風解釈】",
+                lblStyle: "お守りのデザインを選択：",
+                btnDownload: "お守りをダウンロードしてコレクション",
+                btnRestart: "もう一度引く",
+                categories: { general: "総合運勢", career: "前途・仕事", love: "恋愛・姻縁", study: "学業・試験", health: "健康長寿" },
+                genders: { male: "男性 (善男)", female: "女性 (信女)", other: "その他" }
+            },
+            "ko": {
+                subtitle: "가오슝 사범대학 교육학과 류스민 교수 설계",
+                step1Title: "성심 어린 기도",
+                step1Desc: "이름과 소원을 속으로 빌어주세요.",
+                lblName: "이름:",
+                lblGender: "성별:",
+                lblCategory: "기도 분야:",
+                lblWish: "구체적 소원:",
+                btnPray: "신께 기도 올리기",
+                step2Title: "점통 흔들기",
+                step2Desc: "통을 클릭하세요.",
+                btnShake: "점괘 뽑기",
+                step3Title: "점판 던지기 (총 3번)",
+                step3Desc: "담당 신에게 점판을 던져 이 점괘를 확인하세요.",
+                btnToss: "점판 던지기",
+                excuseTitle: "신께서 부재중이십니다",
+                btnRetry: "다시 기도하기",
+                hDeity: "[담당 신]",
+                hMeaning: "[신년 해설]",
+                hStory: "[역사적 고사]",
+                hAi: "[AI 현대적 해석]",
+                lblStyle: "부적 디자인 선택:",
+                btnDownload: "부적 다운로드 및 소장하기",
+                btnRestart: "다시 뽑기",
+                categories: { general: "종합 운세", career: "진로 및 사업", love: "인연 및 애정", study: "학업 및 시험", health: "건강" },
+                genders: { male: "남성 (선남)", female: "여성 (신녀)", other: "기타" }
+            }
+        };
+
+        const excuses = {
+            "zh-Hant": [
+                "去參加『蟠桃會』吃到痛風，正在南天門排隊拿胃藥。",
+                "最近業務量暴增，全體支援去幫忙牽紅線，辦公室大門深鎖。",
+                "揪團去宇宙邊緣觀賞黑洞直播，Wi-Fi 訊號不穩暫時失聯。",
+                "突然抽查天庭衛生評鑑，忙著擦神桌與擦金身。",
+                "去參加『北極星盃』神仙麻將大賽，目前正聽牌中，請晚點再來。",
+                "去北歐極光村度假，不在辦公室值班。",
+                "正在進行 5G 基地台全面升級，連線中斷中。",
+                "跑去人間追近期最夯的串流神劇，正看到精彩大結局無法分心。",
+                "不小心把咖啡打翻在生死簿上，大家正忙著用吹風機搶救中。",
+                "集體報名了『南天門瑜伽特訓班』，正集體呈現倒立冥想狀態。",
+                "在雲端發紅包系統當機，被抓去當免費工程師加班。",
+                "去參加跨次元神仙運動會的馬拉松項目，目前還在跑第 42 公里。",
+                "輪到補眠，棉被蓋太厚聽不到您的呼喚。",
+                "跑去出海進香兼暈船，目前正在吐納調息。",
+                "牽紅線不小心把自己的鬍子跟紅線綁在一起，眾神正在幫忙解繩結。",
+                "跑去參加『天界好聲音』歌唱比賽，目前正在後台開嗓練假音。",
+                "因違章建築被太上老君開單，全體去上法律補救講座。",
+                "因昨晚看流星雨太晚睡，集體賴床中。",
+                "跑去微風拂過的仙界海岸線淨灘，暫時不在神桌前。",
+                "正在開一場『如何應付人類奇葩願望』的年度檢討大會。"
+            ],
+            "zh-Hans": [
+                "去参加‘蟠桃会’吃到痛风，正在南天门排队拿胃药。",
+                "最近业务量暴增，全体支援去帮忙牵红线，办公室大门深锁。",
+                "揪团去宇宙边缘观赏黑洞直播，Wi-Fi 信号不稳暂时失联。",
+                "突然抽查天庭卫生评鉴，忙着擦神桌与擦金身。",
+                "去参加‘北极星杯’神仙麻将大赛，目前正听牌中，请晚点再来。",
+                "去北欧极光村度假，不在办公室值班。",
+                "正在进行 5G 基站全面升级，连线中断中。",
+                "跑去人间追近期最夯的流媒体神剧，正看到精彩大结局无法分心。",
+                "不小心把咖啡打翻在生死簿上，大家正忙着用吹风机抢救中。",
+                "集体报名了‘南天门瑜伽特训班’，正集体呈现倒立冥想状态。",
+                "在云端发放红包系统宕机，被抓去当免费工程师加班。",
+                "去参加跨次元神仙运动会的马拉松项目，目前还在跑第 42 公里。",
+                "轮到补觉，棉被盖太厚听不到您的呼唤。",
+                "跑去出海进香兼晕船，目前正在吐纳调息。",
+                "牵红线不小心把自己的胡子跟红线绑在一起，众神正在帮忙解绳结。",
+                "跑去参加‘天界好声音’歌唱比赛，目前正在后台开嗓练假音。",
+                "因违章建筑被太上老君开单，全体去上法律补救讲座。",
+                "因昨晚看流星雨太晚睡，集体赖床中。",
+                "跑去微风拂过的仙界海岸线净滩，暂时不在神桌前。",
+                "正在开一场‘如何应付人类奇葩愿望’的年度检讨大会。"
+            ],
+            "en": [
+                "went to the Celestial Peach Banquet, got gout, and is queuing for stomach medicine.",
+                "is overloaded and out helping tie red strings.",
+                "is watching a black hole livestream with unstable Wi-Fi at the edge of the universe.",
+                "is inspecting celestial hygiene and dusting golden statues.",
+                "is playing in the North Star Mahjong Championship.",
+                "is vacationing in an aurora village.",
+                "is experiencing a heavenly 5G network disconnection.",
+                "is binge-watching a mortal streaming series and can't be disturbed.",
+                "spilled coffee on the Book of Life and Death and is using a hair dryer.",
+                "is attending an upside-down meditation yoga class.",
+                "got drafted as unpaid IT support because the cloud system crashed.",
+                "is running the Interdimensional Marathon.",
+                "is taking a nap; the blanket is too thick to hear your call.",
+                "went on a sea pilgrimage and is currently seasick.",
+                "accidentally tied his beard with a red string and is untangling it.",
+                "is backstage warming up for a singing contest.",
+                "received a building violation fine and is in a legal seminar.",
+                "stayed up late watching a meteor shower and is oversleeping.",
+                "is cleaning up beach trash on the fairy coastline.",
+                "is in an annual meeting about 'Absurd Human Wishes'."
+            ],
+            "de": [
+                "ist beim Pfirsichbankett und hat Magenprobleme.",
+                "hilft dem Heiratsvermittler, rote Schnüre zu knüpfen.",
+                "schaut sich einen Schwarzen-Loch-Livestream an.",
+                "inspiziert die himmlische Hygiene.",
+                "spielt Nordstern-Mahjong.",
+                "macht Urlaub im Nordlicht-Dorf.",
+                "hat eine himmlische 5G-Netzwerkunterbrechung.",
+                "schaut eine Serie und kann nicht gestört werden.",
+                "hat Kaffee über das Buch von Leben und Tod verschüttet.",
+                "macht Yoga am Südtor.",
+                "leistet unbezahlten IT-Support nach Systemabsturz.",
+                "läuft beim interdimensionalen Marathon.",
+                "hält ein Nickerchen; die Decke ist zu dick.",
+                "ist auf Meereswallfahrt und hat Seekrankheit.",
+                "hat seinen Bart mit einer roten Schnur verknotet.",
+                "probt für den Gesangswettbewerb.",
+                "besucht ein juristisches Seminar wegen Baufehlern.",
+                "hat Sternschnuppen geschaut und verschläft.",
+                "macht Strandreinigung an der Elfenküste.",
+                "ist in einer Jahressitzung über absurde Wünsche."
+            ],
+            "fr": [
+                "est au banquet des pêches célestes et fait la queue pour des médicaments.",
+                "aide à nouer les fils rouges.",
+                "regarde un livestream de trou noir (mauvais Wi-Fi).",
+                "inspecte l'hygiène céleste.",
+                "participe à un tournoi de Mahjong.",
+                "est en vacances dans un village aurore.",
+                "subit une interruption du réseau 5G céleste.",
+                "fait du binge-watching d'une série.",
+                "a renversé du café sur le Livre de la Vie.",
+                "suit un cours de yoga de méditation inversée.",
+                "fait du support informatique bénévole suite à un plantage.",
+                "court le marathon interdimensionnel.",
+                "fait la sieste, la couverture est trop épaisse.",
+                "est en pèlerinage en mer et a le mal de mer.",
+                "a noué sa barbe avec le fil rouge.",
+                "répète pour un concours de chant.",
+                "assiste à un séminaire juridique pour infraction.",
+                "a veillé tard pour voir une pluie de météores.",
+                "nettoie les déchets de la plage féerique.",
+                "est en réunion annuelle sur les vœux absurdes."
+            ],
+            "ja": [
+                "は蟠桃会で食べ過ぎて胃薬の行列に並んでいます。",
+                "の応援（縁結び）に駆り出されています。",
+                "は宇宙の端でブラックホールのライブ配信を見ています。",
+                "は天界の衛生点検をしています。",
+                "は神様麻雀大会に参加中です。",
+                "は北欧のオーロラ村へバカンス中です。",
+                "は天界の5G基地局アップデート中です。",
+                "は人間界の最新ドラマに夢中です。",
+                "は生死簿にコーヒーをこぼし乾かしています。",
+                "は南天門ヨガ特訓班に参加中です。",
+                "はクラウドのシステムダウンで残業中です。",
+                "は次元を超えたマラソン大会に参加中です。",
+                "は布団を被りすぎて爆睡中です。",
+                "は船で参拝に行って船酔い中です。",
+                "は自分のヒゲと赤い糸を結んでしまい、ほどいています。",
+                "は歌声コンテストの練習中です。",
+                "は違法建築で法律講習を受けています。",
+                "は流れ星を見すぎて寝坊しています。",
+                "はビーチクリーンに出かけています。",
+                "は年度末会議中です。"
+            ],
+            "ko": [
+                "신(님)은 천도복숭아 연회에서 과식해 위장약 줄을 서 계십니다.",
+                "신(님)은 붉은실 묶기를 지원하러 갔습니다.",
+                "신(님)은 우주 끝에서 블랙홀 라이브 방송을 시청 중입니다.",
+                "신(님)은 천계 위생 점검을 나와 금불상을 닦고 있습니다.",
+                "신(님)은 북극성배 마작 대회에 참가 중입니다.",
+                "신(님)은 북유럽 오로라 마을로 휴가를 갔습니다.",
+                "신(님)은 천계 5G 업그레이드 중입니다.",
+                "신(님)은 스트리밍 드라마를 시청 중입니다.",
+                "신(님)은 생사부에 커피를 쏟아 말리는 중입니다.",
+                "신(님)은 남천문 요가 특훈반에 있습니다.",
+                "신(님)은 시스템 다운으로 IT 야근 중입니다.",
+                "신(님)은 차원 이탈 마라톤을 뛰고 있습니다.",
+                "신(님)은 낮잠 시간인데 이불이 너무 두껍습니다.",
+                "신(님)은 바다 순례를 갔다가 멀미가 났습니다.",
+                "신(님)은 턱수염과 붉은실이 묶여 매듭을 푸는 중입니다.",
+                "신(님)은 노래자랑 백스테이지에서 목을 풀고 있습니다.",
+                "신(님)은 불법 건축물 딱지로 법률 세미나에 갔습니다.",
+                "신(님)은 유성우를 보느라 늦잠을 자고 있습니다.",
+                "신(님)은 해안선 환경미화 활동 중입니다.",
+                "신(님)은 ‘인간들의 엉뚱한 소원 대처법’ 회의 중입니다."
+            ]
+        };
+
+        function getFortuneData(index, lang) {
+            const categories = ['general', 'career', 'love', 'study', 'health'];
+            const levels = ['大吉', '上上', '上吉', '中吉', '平平', '中平'];
+            const defaultPoems = [
+                "巍巍寶塔上青雲，萬里乾坤眼底分。<br>莫道前程無覓處，今朝得遇貴人津。",
+                "寒窗苦讀十年間，只待春風過玉關。<br>金榜題名名在望，莫教懈怠心茫然。",
+                "月老紅繩千里牽，金風玉露相逢緣。<br>花開並蒂春光好，百年好合結良緣。",
+                "病從口入禍心生，保養身軀莫妄行。<br>調理陰陽調息氣，平安二字值千金。",
+                "舟行大海遇微風，波浪雖平莫放鬆。<br>穩舵齊心向前去，前程自有好收豐。"
+            ];
+            const cat = categories[index % categories.length];
+            const level = levels[index % levels.length];
+            return {
+                id: index + 1,
+                title: `第 ${index + 1} 籤`,
+                level: level,
+                cat: cat,
+                poem: defaultPoems[index % defaultPoems.length],
+                meaning: `此籤主${cat === 'general' ? '綜合運勢亨通' : cat === 'career' ? '事業順利' : cat === 'love' ? '良緣美滿' : cat === 'study' ? '金榜題名' : '身體康健'}，心誠則靈，百事皆吉。`,
+                story: `傳統經典典故 #${index + 1}`
+            };
+        }
+
+        let currentLang = "zh-Hant";
+        let currentStep = 1;
+        let tossCount = 0;
+        let shengBeiCount = 0;
+        let selectedFortune = null;
+        let selectedCategory = "general";
+        let assignedDeity = "";
+        let userName = "";
+        let userGender = "male";
+        let userWish = "";
+
+        function changeLanguage(lang) {
+            currentLang = lang;
+            const t = i18n[lang] || i18n["zh-Hant"];
+            
+            document.getElementById("ui-subtitle").innerText = t.subtitle;
+            document.getElementById("ui-step1-title").innerText = t.step1Title;
+            document.getElementById("ui-step1-desc").innerText = t.step1Desc;
+            document.getElementById("ui-lbl-name").innerText = t.lblName;
+            document.getElementById("ui-lbl-gender").innerText = t.lblGender;
+            document.getElementById("ui-lbl-category").innerText = t.lblCategory;
+            document.getElementById("ui-lbl-wish").innerText = t.lblWish;
+            document.getElementById("ui-btn-pray").innerText = t.btnPray;
+            
+            document.getElementById("ui-step2-title").innerText = t.step2Title;
+            document.getElementById("ui-step2-desc").innerText = t.step2Desc;
+            document.getElementById("ui-btn-shake").innerText = t.btnShake;
+            
+            document.getElementById("ui-step3-title").innerText = t.step3Title;
+            document.getElementById("ui-step3-desc").innerText = t.step3Desc;
+            document.getElementById("ui-btn-toss").innerText = t.btnToss;
+            
+            document.getElementById("ui-excuse-title").innerText = t.excuseTitle;
+            document.getElementById("ui-btn-retry").innerText = t.btnRetry;
+            
+            document.getElementById("ui-h-deity").innerText = t.hDeity;
+            document.getElementById("ui-h-meaning").innerText = t.hMeaning;
+            document.getElementById("ui-h-story").innerText = t.hStory;
+            document.getElementById("ui-h-ai").innerText = t.hAi;
+            document.getElementById("ui-lbl-style").innerText = t.lblStyle;
+            document.getElementById("ui-btn-download").innerText = t.btnDownload;
+            document.getElementById("ui-btn-restart").innerText = t.btnRestart;
+
+            const catSelect = document.getElementById("fortuneCategory");
+            catSelect.innerHTML = `
+                <option value="general">${t.categories.general}</option>
+                <option value="career">${t.categories.career}</option>
+                <option value="love">${t.categories.love}</option>
+                <option value="study">${t.categories.study}</option>
+                <option value="health">${t.categories.health}</option>
+            `;
+
+            const genSelect = document.getElementById("userGenderInput");
+            genSelect.innerHTML = `
+                <option value="male">${t.genders.male}</option>
+                <option value="female">${t.genders.female}</option>
+                <option value="other">${t.genders.other}</option>
+            `;
+        }
+
+        function showStep(step) {
+            document.querySelectorAll(".step-section").forEach(el => el.classList.remove("active"));
+            document.getElementById(`step${step}`).classList.add("active");
+            currentStep = step;
+        }
+
+        function startPraying() {
+            const nameVal = document.getElementById("userNameInput").value.trim();
+            const genderVal = document.getElementById("userGenderInput").value;
+            const wishVal = document.getElementById("userWishInput").value.trim();
+            const catVal = document.getElementById("fortuneCategory").value;
+            
+            if (!nameVal) {
+                alert(currentLang === 'en' ? "Please enter your name." : "請先填寫您的姓名以示誠意。");
+                return;
+            }
+            userName = nameVal;
+            userGender = genderVal;
+            userWish = wishVal || (currentLang === 'en' ? "All best wishes" : "萬事如意");
+            selectedCategory = catVal;
+
+            const deitiesList = categoryDeities[selectedCategory] || categoryDeities.general;
+            assignedDeity = deitiesList[Math.floor(Math.random() * deitiesList.length)];
+
+            showStep(2);
+        }
+
+        function shakeCylinder() {
+            const cyl = document.getElementById("fortuneCylinder");
+            cyl.classList.add("shaking");
+            setTimeout(() => {
+                cyl.classList.remove("shaking");
+                const randIndex = Math.floor(Math.random() * 60);
+                selectedFortune = getFortuneData(randIndex, currentLang);
+                tossCount = 0;
+                shengBeiCount = 0;
+                updateStatusBoard();
+                showStep(3);
+            }, 1200);
+        }
+
+        function updateStatusBoard() {
+            const t = i18n[currentLang] || i18n["zh-Hant"];
+            document.getElementById("statusBoard").innerText = 
+                `${currentLang === 'en' ? 'Deity' : '值班神明'}：【${assignedDeity}】 | ${currentLang === 'en' ? 'Toss' : '擲筊進度'}: ${tossCount}/3 (聖筊: ${shengBeiCount}/2)`;
+        }
+
+        function tossBlocks() {
+            if (tossCount >= 3) return;
+
+            const bLeft = document.getElementById("blockLeft");
+            const bRight = document.getElementById("blockRight");
+
+            bLeft.classList.add("tossing");
+            bRight.classList.add("tossing");
+
+            setTimeout(() => {
+                bLeft.classList.remove("tossing");
+                bRight.classList.remove("tossing");
+
+                const stateLeft = Math.random() < 0.5 ? 0 : 1;
+                const stateRight = Math.random() < 0.5 ? 0 : 1;
+
+                applyBlockStyle(bLeft, stateLeft);
+                applyBlockStyle(bRight, stateRight);
+
+                if ((stateLeft === 0 && stateRight === 1) || (stateLeft === 1 && stateRight === 0)) {
+                    shengBeiCount++;
+                }
+
+                tossCount++;
+                updateStatusBoard();
+
+                if (shengBeiCount >= 2) {
+                    setTimeout(displayResult, 1000);
+                    return;
+                }
+
+                if (tossCount >= 3 && shengBeiCount < 2) {
+                    setTimeout(triggerDivineAway, 1000);
+                }
+
+            }, 800);
+        }
+
+        function applyBlockStyle(element, state) {
+            if (state === 0) {
+                element.className = "block flat";
+            } else {
+                element.className = "block convex";
+            }
+        }
+
+        function triggerDivineAway() {
+            const list = excuses[currentLang] || excuses["zh-Hant"];
+            const randomExcuse = list[Math.floor(Math.random() * list.length)];
+            document.getElementById("excuseText").innerText = `值班神明【${assignedDeity}】${randomExcuse}`;
+            showStep(4);
+        }
+
+        function displayResult() {
+            if (!selectedFortune) return;
+            const t = i18n[currentLang] || i18n["zh-Hant"];
+
+            document.getElementById("resultTitle").innerText = `${selectedFortune.title} 【${selectedFortune.level}】`;
+            document.getElementById("resultCategoryBadge").innerText = t.categories[selectedFortune.cat] || selectedFortune.cat;
+            document.getElementById("resultPoem").innerHTML = selectedFortune.poem;
+            document.getElementById("resultDeityName").innerText = `${assignedDeity} 慈悲鑒定並賜予指示`;
+            document.getElementById("resultMeaning").innerText = selectedFortune.meaning;
+            document.getElementById("resultStory").innerText = selectedFortune.story;
+            document.getElementById("resultAi").innerText = `AI 現代解讀：由【${assignedDeity}】坐鎮庇佑，提醒您在${t.categories[selectedFortune.cat]}上保持彈性與信心，把握當下契機！`;
+
+            showStep(5);
+        }
+
+        function resetToStep1() {
+            tossCount = 0;
+            shengBeiCount = 0;
+            selectedFortune = null;
+            assignedDeity = "";
+            document.getElementById("userNameInput").value = "";
+            document.getElementById("userWishInput").value = "";
+            showStep(1);
+        }
+
+        function downloadPersonalizedAmulet() {
+            if (!selectedFortune) return;
+
+            let titlePrefix = "善男";
+            if (currentLang === 'zh-Hant' || currentLang === 'zh-Hans') {
+                if (userGender === 'female') titlePrefix = "信女";
+                else if (userGender === 'other') titlePrefix = "善信";
+            } else if (currentLang === 'en') {
+                titlePrefix = userGender === 'female' ? "Ms." : userGender === 'male' ? "Mr." : "Believer";
+            } else if (currentLang === 'ja') {
+                titlePrefix = userGender === 'female' ? "信女" : "善男";
+            } else {
+                titlePrefix = "Believer";
+            }
+
+            const styleVal = document.getElementById("amuletStyleSelect").value;
+            const targetArea = document.getElementById("customAmuletCanvasArea");
+            
+            // 依據 10 種款式套用不同的視覺色彩與邊框主題
+            applyAmuletStyleTheme(styleVal, targetArea);
+
+            document.getElementById("amuletPlayerName").innerText = `${titlePrefix} ${userName}`;
+            document.getElementById("amuletDeityName").innerText = `值班神明：${assignedDeity}`;
+            document.getElementById("amuletWishText").innerText = `誠心祈求：\n${userWish}`;
+            document.getElementById("amuletPoemSummary").innerHTML = `${selectedFortune.title}【${selectedFortune.level}】<br>${selectedFortune.poem.replace(/<br>/g, ' ')}`;
+
+            html2canvas(targetArea, { scale: 2, useCORS: true }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = `${userName}_${assignedDeity}_${styleVal}_護身符.png`;
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+            }).catch(err => {
+                console.error("生成桌布失敗：", err);
+                alert("產生桌布時發生錯誤，請稍後再試。");
+            });
+        }
+
+        // 10種護身符款式視覺主題切換函式
+        function applyAmuletStyleTheme(style, element) {
+            switch(style) {
+                case 'style1': // 御賜朱紅
+                    element.style.backgroundColor = "#b92b27";
+                    element.style.borderColor = "#d4ac0d";
+                    element.style.color = "#f9e79f";
+                    break;
+                case 'style2': // 太極八卦
+                    element.style.backgroundColor = "#78281f";
+                    element.style.borderColor = "#a04000";
+                    element.style.color = "#fcf3cf";
+                    break;
+                case 'style3': // 紫氣東來
+                    element.style.backgroundColor = "#512e5f";
+                    element.style.borderColor = "#af7ac5";
+                    element.style.color = "#ebdef0";
+                    break;
+                case 'style4': // 財源廣進
+                    element.style.backgroundColor = "#b7950b";
+                    element.style.borderColor = "#7d6608";
+                    element.style.color = "#fef9e7";
+                    break;
+                case 'style5': // 桃花人緣
+                    element.style.backgroundColor = "#c0392b";
+                    element.style.borderColor = "#f1948a";
+                    element.style.color = "#fadbd8";
+                    break;
+                case 'style6': // 文昌智慧
+                    element.style.backgroundColor = "#117a65";
+                    element.style.borderColor = "#52be80";
+                    element.style.color = "#e8f8f5";
+                    break;
+                case 'style7': // 平安健康
+                    element.style.backgroundColor = "#1e8449";
+                    element.style.borderColor = "#82e0aa";
+                    element.style.color = "#eafaf1";
+                    break;
+                case 'style8': // 蒼龍騰達
+                    element.style.backgroundColor = "#1b4f72";
+                    element.style.borderColor = "#5499c7";
+                    element.style.color = "#ebf5fb";
+                    break;
+                case 'style9': // 光明化煞
+                    element.style.backgroundColor = "#d35400";
+                    element.style.borderColor = "#f39c12";
+                    element.style.color = "#fef5e7";
+                    break;
+                case 'style10': // 劉老珍藏
+                    element.style.backgroundColor = "#2c3e50";
+                    element.style.borderColor = "#f39c12";
+                    element.style.color = "#f9e79f";
+                    break;
+            }
+        }
+    </script>
+</body>
+</html>
